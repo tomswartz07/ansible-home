@@ -1,0 +1,21 @@
+all:
+  children:
+    postgres:
+      hosts:
+        pihole:
+          pg_port: 5432
+          pg_primary: True
+          cluster_name: "main"
+        clusterpi00:
+          pg_port: 5433
+          pg_primary: False
+          cluster_name: "pihole"
+    clusterpi:
+      hosts:
+        clusterpi00:
+        clusterpi01:
+        clusterpi02:
+        clusterpi03:
+    remote:
+      hosts:
+        mountains:

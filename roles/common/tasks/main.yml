@@ -1,0 +1,33 @@
+---
+- name: Uptime check
+  ansible.builtin.debug:
+    msg: "{{ ansible_nodename }} has not been rebooted in {{ now() - now().fromtimestamp(now(fmt='%s') | int - ansible_uptime_seconds) }}, consider rebooting"
+  when:
+    - ansible_uptime_seconds > 7776000
+
+- name: APT Update
+  become: yes
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Apply Upgrades
+  become: yes
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  apt:
+    upgrade: dist
+    update_cache: yes
+    dpkg_options: 'force-confold,force-confdef'
+
+- name: Remove useless packages from the cache
+  become: yes
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  apt:
+    autoclean: yes
+
+- name: Remove dependencies that are no longer required
+  become: yes
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  apt:
+    autoremove: yes

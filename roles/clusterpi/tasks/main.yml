@@ -1,0 +1,11 @@
+---
+#- name: Test ClusterPi
+#  ansible.builtin.debug:
+#    msg: "{{ ansible_nodename }} {{ user }}: {{ cluster }}"
+
+- name: Ensure node_exporter is running
+  become: yes
+  service:
+    name: "prometheus-node-exporter"
+    state: started
+    enabled: yes
