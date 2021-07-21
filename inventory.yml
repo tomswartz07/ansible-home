@@ -12,6 +12,7 @@ all:
           cluster_name: "pihole"
     clusterpi:
       hosts:
+        mediapi:
         clusterpi00:
         clusterpi01:
         clusterpi02:
