@@ -6,6 +6,12 @@
 - name: Ensure node_exporter is running
   become: yes
   service:
-    name: "prometheus-node-exporter"
-    state: started
+    name: "node_exporter"
+    state: restarted
     enabled: yes
+      #- name: Ensure old exporter is disabled
+      #  become: yes
+      #  service:
+      #    name: "prometheus-node-exporter"
+      #    state: stopped
+      #    enabled: no

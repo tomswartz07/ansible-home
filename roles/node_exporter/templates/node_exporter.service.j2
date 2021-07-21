@@ -6,7 +6,7 @@ After=network-online.target
 
 [Service]
 Type=simple
-ExecStart={{ _node_exporter_binary_install_dir }}/node_exporter
+ExecStart={{ _node_exporter_binary_install_dir }}/node_exporter {{ _node_exporter_args }}
 SyslogIdentifier=node_exporter
 Restart=always
 RestartSec=1
