@@ -5,5 +5,4 @@
     daemon_reload: true
     name: node_exporter
     state: restarted
-  when:
-    - not ansible_check_mode
+  when: not ansible_check_mode

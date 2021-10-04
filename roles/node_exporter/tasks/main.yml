@@ -46,6 +46,7 @@
         owner: root
         group: root
       when: not ansible_check_mode
+      notify: Restart node_exporter
 
 - name: Copy the node_exporter systemd Service File
   become: true
