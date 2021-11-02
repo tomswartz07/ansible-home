@@ -12,6 +12,15 @@
     update_cache: yes
     cache_valid_time: 3600
 
+- name: Install Exta Packages
+  become: yes
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  apt:
+    state: present
+    pkg:
+      - vim
+      - zsh
+
 - name: Apply Upgrades
   become: yes
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
