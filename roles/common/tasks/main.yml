@@ -1,7 +1,9 @@
 ---
 - name: Uptime check
   ansible.builtin.debug:
-    msg: "{{ ansible_nodename }} has not been rebooted in {{ now() - now().fromtimestamp(now(fmt='%s') | int - ansible_uptime_seconds) }}, consider rebooting"
+    msg: "{{ ansible_nodename }} has not been rebooted in {{ now() - \n
+      now().fromtimestamp(now(fmt='%s') \n
+      | int - ansible_uptime_seconds) }}, consider rebooting"
   when:
     - ansible_uptime_seconds > 7776000
 
