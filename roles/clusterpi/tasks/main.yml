@@ -3,15 +3,38 @@
 #  ansible.builtin.debug:
 #    msg: "{{ ansible_nodename }} {{ user }}: {{ cluster }}"
 
-- name: Ensure node_exporter is running
+- name: Set up local git dir
+  file:
+    path: /home/pi/git
+    state: directory
+
+- name: Install Git
   become: yes
-  service:
-    name: "node_exporter"
-    state: restarted
-    enabled: yes
-      #- name: Ensure old exporter is disabled
-      #  become: yes
-      #  service:
-      #    name: "prometheus-node-exporter"
-      #    state: stopped
-      #    enabled: no
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  apt:
+    state: present
+    pkg:
+      - git
+
+- name: Pull Linux Configs
+  git:
+    repo: 'https://github.com/tomswartz07/linux-configs.git'
+    dest: /home/pi/git/linux-configs
+
+- name: Set up local gitconfig
+  file:
+    src: '/home/pi/git/linux-configs/gitconfig'
+    dest: '/home/pi/.gitconfig'
+    state: link
+
+- name: Set up config symlinks
+  file:
+    src: '/home/pi/git/linux-configs/{{ item.src }}'
+    dest: '{{ item.dest }}/{{ item.src }}'
+    state: link
+  loop:
+    - { src: .zshrc, dest: /home/pi }
+    - { src: .vimrc, dest: /home/pi }
+    - { src: .vim, dest: /home/pi }
+    - { src: .dircolors, dest: /home/pi }
+    - { src: .dircolors, dest: /home/pi }
