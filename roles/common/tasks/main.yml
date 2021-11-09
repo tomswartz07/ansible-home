@@ -14,7 +14,7 @@
     update_cache: yes
     cache_valid_time: 3600
 
-- name: Install Exta Packages
+- name: Install Extra Packages
   become: yes
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   apt:
