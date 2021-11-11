@@ -20,6 +20,7 @@ all:
         clusterpi04:
         clusterpi05:
         clusterpi06:
+        clusterpi07:
     remote:
       hosts:
         mountains:
