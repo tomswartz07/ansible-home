@@ -7,3 +7,4 @@
     name: node_exporter
     state: restarted
   when: not ansible_check_mode
+  listen: "Restart node_exporter"
