@@ -24,3 +24,4 @@ all:
     remote:
       hosts:
         mountains:
+          promtail_loki_push_host: "remote.tswartz.net:3100"

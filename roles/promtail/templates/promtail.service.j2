@@ -1,0 +1,18 @@
+{{ ansible_managed | comment }}
+
+[Unit]
+Description=Promtail
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart={{ _promtail_binary_install_dir }}/promtail {{ _promtail_args }}
+SyslogIdentifier=promtail
+Restart=always
+RestartSec=1
+StartLimitInterval=0
+
+[Install]
+WantedBy=multi-user.target
+
+# : vim: set ft=systemd :

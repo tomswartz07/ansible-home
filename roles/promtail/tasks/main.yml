@@ -1,0 +1,69 @@
+---
+- block:
+    - name: Get checksum list from GitHub
+      set_fact:
+        _checksums: "{{ lookup('url', 'https://github.com/grafana/loki/releases/download/v' + promtail_version + '/SHA256SUMS', wantlist=True) | list }}"
+      run_once: true
+
+    - name: "Get checksum for host architecture"
+      set_fact:
+        promtail_checksum: "{{ item.split(' ')[0] }}"
+      with_items: "{{ _checksums }}"
+      when:
+        - "('promtail-linux-' + go_arch + '.zip') in item"
+  delegate_to: localhost
+
+- block:
+    - name: Download promtail binary
+      become: false
+      get_url:
+        url: "https://github.com/grafana/loki/releases/download/v{{ promtail_version }}/promtail-linux-{{ go_arch }}.zip"
+        dest: "/tmp/promtail-{{ promtail_version }}-linux-{{ go_arch }}.zip"
+        checksum: "sha256:{{ promtail_checksum }}"
+        mode: '0644'
+      register: _download_binary
+      until: _download_binary is succeeded
+      retries: 5
+      delay: 2
+      delegate_to: localhost
+      check_mode: false
+
+    - name: Unpack promtail binary
+      become: false
+      unarchive:
+        src: "/tmp/promtail-{{ promtail_version }}-linux-{{ go_arch }}.zip"
+        dest: "/tmp"
+        creates: "/tmp/promtail-linux-{{ go_arch }}"
+      delegate_to: localhost
+      check_mode: false
+
+    - name: Propagate promtail binaries
+      become: true
+      copy:
+        src: "/tmp/promtail-linux-{{ go_arch }}"
+        dest: "{{ _promtail_binary_install_dir }}/promtail"
+        mode: 0755
+        owner: root
+        group: root
+      when: not ansible_check_mode
+      notify: Restart promtail
+
+- name: Copy the promtail Config File
+  become: true
+  template:
+    src: promtail-local.yml.j2
+    dest: /etc/promtail-local.yml
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart promtail
+
+- name: Copy the promtail systemd Service File
+  become: true
+  template:
+    src: promtail.service.j2
+    dest: /etc/systemd/system/promtail.service
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart promtail

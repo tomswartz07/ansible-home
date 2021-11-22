@@ -1,0 +1,10 @@
+---
+- name: Restart promtail
+  become: true
+  systemd:
+    daemon_reload: true
+    enabled: true
+    name: promtail
+    state: restarted
+  when: not ansible_check_mode
+  listen: "Restart promtail"
