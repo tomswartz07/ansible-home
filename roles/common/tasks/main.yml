@@ -22,6 +22,7 @@
     pkg:
       - vim
       - zsh
+      - ntp
 
 - name: Apply Upgrades
   become: yes
@@ -42,3 +43,10 @@
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   apt:
     autoremove: yes
+
+- name: Ensure time is synced
+  become: yes
+  service:
+    name: ntp
+    enabled: yes
+    state: started
