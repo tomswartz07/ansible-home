@@ -38,3 +38,13 @@
     - { src: .vim, dest: /home/pi }
     - { src: .dircolors, dest: /home/pi }
     - { src: .dircolors, dest: /home/pi }
+
+- name: Set up larger Swap size
+  become: true
+  template:
+    src: dphys-swapfile.j2
+    dest: /etc/dphys-swapfile
+    owner: root
+    group: root
+    mode: 0644
+  notify: Reload Swap

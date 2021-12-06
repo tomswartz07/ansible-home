@@ -1,0 +1,9 @@
+---
+- name: Reload Swap
+  become: true
+  systemd:
+    daemon_reload: true
+    enabled: true
+    name: dphys-swapfile
+    state: restarted
+  listen: "Reload Swap"

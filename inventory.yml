@@ -14,6 +14,7 @@ all:
       hosts:
         mediapi:
         clusterpi00:
+          _dphys_swap_size: 600
         clusterpi01:
         clusterpi02:
         clusterpi03:
