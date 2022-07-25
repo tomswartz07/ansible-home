@@ -5,7 +5,7 @@
 
 - name: Set up local git dir
   file:
-    path: /home/pi/git
+    path: "{{ ansible_facts['user_dir'] }}/git"
     state: directory
     mode: '0755'
 
@@ -20,28 +20,29 @@
 - name: Pull Linux Configs
   git:
     repo: 'https://github.com/tomswartz07/linux-configs.git'
-    dest: /home/pi/git/linux-configs
+    dest: "{{ ansible_facts['user_dir'] }}/git/linux-configs"
 
 - name: Set up local gitconfig
   file:
-    src: '/home/pi/git/linux-configs/gitconfig'
-    dest: '/home/pi/.gitconfig'
+    src: "{{ ansible_facts['user_dir'] }}/git/linux-configs/gitconfig"
+    dest: "{{ ansible_facts['user_dir'] }}/.gitconfig"
     state: link
 
 - name: Set up config symlinks
   file:
-    src: '/home/pi/git/linux-configs/{{ item.src }}'
+    src: "{{ ansible_facts['user_dir'] }}/git/linux-configs/{{ item.src }}"
     dest: '{{ item.dest }}/{{ item.src }}'
     state: link
   loop:
-    - {src: .zshrc, dest: /home/pi}
-    - {src: .vimrc, dest: /home/pi}
-    - {src: .vim, dest: /home/pi}
-    - {src: .dircolors, dest: /home/pi}
-    - {src: .dircolors, dest: /home/pi}
+    - {src: .zshrc, dest: "{{ ansible_facts['user_dir'] }}"}
+    - {src: .vimrc, dest: "{{ ansible_facts['user_dir'] }}"}
+    - {src: .vim, dest: "{{ ansible_facts['user_dir'] }}"}
+    - {src: .dircolors, dest: "{{ ansible_facts['user_dir'] }}"}
+    - {src: .dircolors, dest: "{{ ansible_facts['user_dir'] }}"}
 
 - name: Set up larger Swap size
   become: true
+  when: _manage_swap == true
   template:
     src: dphys-swapfile.j2
     dest: /etc/dphys-swapfile

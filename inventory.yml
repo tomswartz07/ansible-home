@@ -12,6 +12,8 @@ all:
           cluster_name: "pihole"
     clusterpi:
       hosts:
+        debian:
+          _manage_swap: false
         mediapi:
         clusterpi00:
           _dphys_swap_size: 600
