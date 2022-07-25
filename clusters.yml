@@ -6,13 +6,13 @@
     - common
 
 - hosts: clusterpi
-  gather_facts: False
+  gather_facts: false
   vars:
     cluster: "clusterpi"
   roles:
     - clusterpi
 
 - hosts: postgres
-  gather_facts: False
+  gather_facts: false
   roles:
     - postgres

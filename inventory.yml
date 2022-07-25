@@ -4,11 +4,11 @@ all:
       hosts:
         pihole:
           pg_port: 5432
-          pg_primary: True
+          pg_primary: true
           cluster_name: "main"
         clusterpi00:
           pg_port: 5433
-          pg_primary: False
+          pg_primary: false
           cluster_name: "pihole"
     clusterpi:
       hosts:

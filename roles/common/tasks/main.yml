@@ -8,14 +8,14 @@
     - ansible_uptime_seconds > 7776000
 
 - name: APT Update
-  become: yes
+  become: true
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   apt:
-    update_cache: yes
+    update_cache: true
     cache_valid_time: 3600
 
 - name: Install Extra Packages
-  become: yes
+  become: true
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   apt:
     state: present
@@ -25,28 +25,28 @@
       - ntp
 
 - name: Apply Upgrades
-  become: yes
+  become: true
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   apt:
     upgrade: dist
-    update_cache: yes
+    update_cache: true
     dpkg_options: 'force-confold,force-confdef'
 
 - name: Remove useless packages from the cache
-  become: yes
+  become: true
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   apt:
-    autoclean: yes
+    autoclean: true
 
 - name: Remove dependencies that are no longer required
-  become: yes
+  become: true
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   apt:
-    autoremove: yes
+    autoremove: true
 
 - name: Ensure time is synced
-  become: yes
+  become: true
   service:
     name: ntp
-    enabled: yes
+    enabled: true
     state: started

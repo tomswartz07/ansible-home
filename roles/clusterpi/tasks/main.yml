@@ -1,5 +1,5 @@
 ---
-#- name: Test ClusterPi
+# - name: Test ClusterPi
 #  ansible.builtin.debug:
 #    msg: "{{ ansible_nodename }} {{ user }}: {{ cluster }}"
 
@@ -7,9 +7,10 @@
   file:
     path: /home/pi/git
     state: directory
+    mode: '0755'
 
 - name: Install Git
-  become: yes
+  become: true
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   apt:
     state: present
@@ -33,11 +34,11 @@
     dest: '{{ item.dest }}/{{ item.src }}'
     state: link
   loop:
-    - { src: .zshrc, dest: /home/pi }
-    - { src: .vimrc, dest: /home/pi }
-    - { src: .vim, dest: /home/pi }
-    - { src: .dircolors, dest: /home/pi }
-    - { src: .dircolors, dest: /home/pi }
+    - {src: .zshrc, dest: /home/pi}
+    - {src: .vimrc, dest: /home/pi}
+    - {src: .vim, dest: /home/pi}
+    - {src: .dircolors, dest: /home/pi}
+    - {src: .dircolors, dest: /home/pi}
 
 - name: Set up larger Swap size
   become: true

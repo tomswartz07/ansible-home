@@ -1,4 +1,4 @@
 ---
 user: 'pi'
 _dphys_swap_location: /var/swap
-_dphys_swap_size: 200
+_dphys_swap_size: 300
