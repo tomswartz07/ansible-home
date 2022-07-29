@@ -37,12 +37,13 @@
     - {src: .zshrc, dest: "{{ ansible_facts['user_dir'] }}"}
     - {src: .vimrc, dest: "{{ ansible_facts['user_dir'] }}"}
     - {src: .vim, dest: "{{ ansible_facts['user_dir'] }}"}
+    - {src: .tmux.conf, dest: "{{ ansible_facts['user_dir'] }}"}
     - {src: .dircolors, dest: "{{ ansible_facts['user_dir'] }}"}
-    - {src: .dircolors, dest: "{{ ansible_facts['user_dir'] }}"}
+    - {src: .config/nvim, dest: "{{ ansible_facts['user_dir'] }}"}
 
 - name: Set up larger Swap size
   become: true
-  when: _manage_swap == true
+  when: _manage_swap
   template:
     src: dphys-swapfile.j2
     dest: /etc/dphys-swapfile
