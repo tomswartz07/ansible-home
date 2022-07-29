@@ -1,0 +1,3 @@
+---
+postgres_exporter_version: 0.11.0
+_postgres_exporter_binary_install_dir: "/usr/local/bin"

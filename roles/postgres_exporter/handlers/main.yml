@@ -1,0 +1,10 @@
+---
+- name: Restart postgres_exporter
+  become: true
+  systemd:
+    daemon_reload: true
+    enabled: true
+    name: postgres_exporter@{{ pg_port }}.service
+    state: restarted
+  when: not ansible_check_mode
+  listen: "Restart postgres_exporter"

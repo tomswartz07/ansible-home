@@ -1,0 +1,71 @@
+---
+- name: Validation
+  block:
+    - name: Get checksum list from GitHub
+      set_fact:
+        _checksums: "{{ lookup('url', 'https://github.com/prometheus-community/postgres_exporter/releases/download/v' + postgres_exporter_version + '/sha256sums.txt', wantlist=True) | list }}"
+      run_once: true
+
+    - name: "Get checksum for host architecture"
+      set_fact:
+        postgres_exporter_checksum: "{{ item.split(' ')[0] }}"
+      with_items: "{{ _checksums }}"
+      when:
+        - "('linux-' + go_arch + '.tar.gz') in item"
+  delegate_to: localhost
+
+- name: Download
+  block:
+    - name: Download postgres_exporter binary
+      become: false
+      get_url:
+        url: "https://github.com/prometheus-community/postgres_exporter/releases/download/v{{ postgres_exporter_version }}/postgres_exporter-{{ postgres_exporter_version }}.linux-{{ go_arch }}.tar.gz"
+        dest: "/tmp/postgres_exporter-{{ postgres_exporter_version }}.linux-{{ go_arch }}.tar.gz"
+        checksum: "sha256:{{ postgres_exporter_checksum }}"
+        mode: '0644'
+      register: _download_binary
+      until: _download_binary is succeeded
+      retries: 5
+      delay: 2
+      delegate_to: localhost
+      check_mode: false
+
+    - name: Unpack postgres_exporter binary
+      become: false
+      unarchive:
+        src: "/tmp/postgres_exporter-{{ postgres_exporter_version }}.linux-{{ go_arch }}.tar.gz"
+        dest: "/tmp"
+        creates: "/tmp/postgres_exporter-{{ postgres_exporter_version }}.linux-{{ go_arch }}/postgres_exporter"
+      delegate_to: localhost
+      check_mode: false
+
+    - name: Propagate postgres_exporter binaries
+      become: true
+      copy:
+        src: "/tmp/postgres_exporter-{{ postgres_exporter_version }}.linux-{{ go_arch }}/postgres_exporter"
+        dest: "{{ _postgres_exporter_binary_install_dir }}/postgres_exporter"
+        mode: 0755
+        owner: root
+        group: root
+      when: not ansible_check_mode
+      notify: Restart postgres_exporter
+
+- name: Copy the postgres_exporter systemd Service File
+  become: true
+  template:
+    src: postgres_exporter@.service.j2
+    dest: /etc/systemd/system/postgres_exporter@.service
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart postgres_exporter
+
+- name: Copy the postgres_exporter query files
+  become: true
+  template:
+    src: custom-monitor.yml.j2
+    dest: /etc/postgres_exporter/11/custom-monitor.yml
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart postgres_exporter

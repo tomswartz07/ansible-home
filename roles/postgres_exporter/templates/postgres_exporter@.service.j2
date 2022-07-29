@@ -1,0 +1,20 @@
+{{ ansible_managed | comment }}
+
+[Unit]
+Description=Postgres Exporter Server
+After=network.target
+
+[Service]
+#PermissionsStartOnly=true
+#User=ccp_monitoring
+#EnvironmentFile=/etc/sysconfig/%i
+Environment=DATA_SOURCE_NAME="postgresql://ccp_monitoring@127.0.0.1:%i/postgres"
+ExecStart=/usr/local/bin/postgres_exporter --disable-settings-metrics --extend.query-path=/etc/postgres_exporter/11/custom-monitor.yml
+ExecReload=/usr/bin/kill -HUP $MAINPID
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+DefaultInstance=postgres-exporter
+
+# : vim: set ft=systemd :
