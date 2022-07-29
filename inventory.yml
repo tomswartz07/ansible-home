@@ -14,7 +14,8 @@ all:
       hosts:
         debian:
           _manage_swap: false
-        mediapi:
+        pihole:
+          _manage_swap: false
         clusterpi00:
           _dphys_swap_size: 600
         clusterpi01:
@@ -24,6 +25,7 @@ all:
         clusterpi05:
         clusterpi06:
         clusterpi07:
+        mediapi:
     remote:
       hosts:
         mountains:
