@@ -2,6 +2,11 @@ all:
   children:
     postgres:
       hosts:
+        debian:
+          pg_port: 5432
+          pg_primary: true
+          _postgresql_major_version: 13
+          cluster_name: "main"
         pihole:
           pg_port: 5432
           pg_primary: true
