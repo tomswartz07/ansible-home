@@ -60,6 +60,17 @@
     mode: 0644
   notify: Restart postgres_exporter
 
+- name: Set up postgres_exporter directory
+  become: true
+  file:
+    path: "/etc/postgres_exporter/11"
+    state: directory
+    owner: root
+    group: root
+    mode: 0644
+  when: not ansible_check_mode
+  notify: Restart postgres_exporter
+
 - name: Copy the postgres_exporter query files
   become: true
   template:
