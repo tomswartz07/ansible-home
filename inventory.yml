@@ -31,7 +31,6 @@ all:
         clusterpi06:
         clusterpi07:
         mediapi:
-    remote:
-      hosts:
         mountains:
           promtail_loki_push_host: "remote.tswartz.net:3100"
+          _dphys_swap_size: 200
