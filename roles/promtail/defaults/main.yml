@@ -1,5 +1,5 @@
 ---
-promtail_version: 2.6.1
+promtail_version: 2.7.0
 promtail_loki_push_host: ds1821:3100
 _promtail_binary_install_dir: "/usr/local/bin"
 _promtail_args: "-config.file=/etc/promtail-local.yml"
