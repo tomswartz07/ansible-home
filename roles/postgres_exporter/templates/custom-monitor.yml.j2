@@ -501,3 +501,29 @@ ccp_pg_stat_statements_top_max:
 # End File: queries_pg_stat_statements_pg11.yml
 #
 ###
+
+
+###
+#
+# Begin File: custom_queries.yml
+#
+###
+pg_application_status:
+  query: "SELECT count(*)
+          , application_name
+          , datname as dbname
+          FROM pg_catalog.pg_stat_activity
+          WHERE usename IS NOT Null
+          AND application_name <> ''
+          AND backend_type LIKE 'client backend'
+          GROUP BY 2,3"
+  metrics:
+    - count:
+        usage: "GAUGE"
+        description: "Number of connections per application"
+    - application_name:
+        usage: "LABEL"
+        description: "Name of the application connecting to the database"
+    - dbname:
+        usage: "LABEL"
+        description: "Database name"
