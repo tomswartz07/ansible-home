@@ -1,5 +1,6 @@
 ---
 - name: Validation
+  delegate_to: localhost
   block:
     - name: Get checksum list from GitHub
       set_fact:
@@ -12,11 +13,11 @@
       with_items: "{{ _checksums }}"
       when:
         - "('promtail-linux-' + go_arch + '.zip') in item"
-  delegate_to: localhost
 
 - name: Download
   block:
     - name: Download promtail binary
+      delegate_to: localhost
       become: false
       get_url:
         url: "https://github.com/grafana/loki/releases/download/v{{ promtail_version }}/promtail-linux-{{ go_arch }}.zip"
@@ -27,16 +28,15 @@
       until: _download_binary is succeeded
       retries: 5
       delay: 2
-      delegate_to: localhost
       check_mode: false
 
     - name: Unpack promtail binary
+      delegate_to: localhost
       become: false
       unarchive:
         src: "/tmp/promtail-{{ promtail_version }}-linux-{{ go_arch }}.zip"
         dest: "/tmp"
         creates: "/tmp/promtail-linux-{{ go_arch }}"
-      delegate_to: localhost
       check_mode: false
 
     - name: Propagate promtail binaries

@@ -2,6 +2,7 @@ skip_list:  # or 'skip_list' to silence them completely
   - git-latest  # Git checkouts must contain explicit version
   - yaml  # Violations reported by yamllint
   - fqcn-builtins  # Use FQCN for builtin actions.
+  - name[play] # Fix issue with incorrectly identified items in playbook
 enable_list:
   - empty-string-compare # opt-in
   - no-log-password # opt-in
