@@ -1,4 +1,4 @@
 ---
 postgresql_owner: postgres
-_postgresql_major_version: 11
+_postgresql_major_version: 13
 service_name: "postgresql@{{ _postgresql_major_version }}-{{ cluster_name }}"
