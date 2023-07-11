@@ -24,6 +24,15 @@
       - vim
       - zsh
       - ntp
+      - htop
+
+- name: Create NVIM VimInfo file
+  file:
+    path: "{{ ansible_facts['user_dir'] }}/.config/nvim/.viminfo"
+    state: touch
+    mode: 0644
+    modification_time: preserve
+    access_time: preserve
 
 - name: Apply Upgrades
   become: true
