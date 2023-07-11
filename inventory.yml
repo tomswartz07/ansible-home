@@ -5,7 +5,10 @@ all:
         debian:
           pg_port: 5432
           pg_primary: true
-          _postgresql_major_version: 13
+          cluster_name: "main"
+        debian2:
+          pg_port: 5432
+          pg_primary: true
           cluster_name: "main"
         pihole:
           pg_port: 5432
@@ -14,10 +17,12 @@ all:
         clusterpi00:
           pg_port: 5433
           pg_primary: false
-          cluster_name: "pihole"
+          cluster_name: "main"
     clusterpi:
       hosts:
         debian:
+          _manage_swap: false
+        debian2:
           _manage_swap: false
         pihole:
           _manage_swap: false
@@ -30,6 +35,8 @@ all:
         clusterpi05:
         clusterpi06:
         clusterpi07:
+        octopi:
+          _dphys_swap_size: 600
         mediapi:
         mountains:
           promtail_loki_push_host: "remote.tswartz.net:3100"
