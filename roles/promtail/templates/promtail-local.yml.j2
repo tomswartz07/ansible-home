@@ -18,10 +18,20 @@ scrape_configs:
       job: varlogs
       __path__: /var/log/*log
 - job_name: postgres
+  pipeline_stages:
+  - timestamp:
+      source: time
+      format: 2006-01-02 03:04:05.000 EDT
+  - regex:
+      expression: '^(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3} E\ST) (?P<content>.*)$'
+  - multiline:
+      firstline: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3} E\ST'
   static_configs:
   - targets:
       - localhost
     labels:
-      hostname: clusterpi00
+      hostname: {{ ansible_hostname }}
       job: postgres
       __path__: /var/log/postgresql/postgresql-*-main.log
+
+# vim: set ft=yaml :
