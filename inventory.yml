@@ -24,6 +24,8 @@ all:
           _manage_swap: false
         debian2:
           _manage_swap: false
+        mediabox:
+          _manage_swap: false
         pihole:
           _manage_swap: false
         clusterpi00:
@@ -39,5 +41,8 @@ all:
           _dphys_swap_size: 600
         mediapi:
         mountains:
+          promtail_loki_push_host: "remote.tswartz.net:3100"
+          _dphys_swap_size: 200
+        shamokin-pihole:
           promtail_loki_push_host: "remote.tswartz.net:3100"
           _dphys_swap_size: 200
